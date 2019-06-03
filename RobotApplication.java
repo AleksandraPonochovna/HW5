@@ -16,7 +16,7 @@ public class RobotApplication {
                 robotConnection.moveRobotTo(toX, toY);
                 check = true;
             } catch (RobotConnectionException ex) {
-                if (!check && i == 3) {
+                if (i == 3) {
                     throw new RobotConnectionException("Close connection.");
                 }
             } finally {
