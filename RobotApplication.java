@@ -16,9 +16,9 @@ public class RobotApplication {
                 robotConnection.moveRobotTo(toX, toY);
                 check = true;
             } catch (RobotConnectionException ex) {
-                throw new RobotConnectionException(ex.getMessage(), ex);
-            } catch (RuntimeException ex) {
-                System.out.println("Error.");
+                if (!check && i == 3) {
+                    throw new RobotConnectionException("Close connection.");
+                }
             } finally {
                 try {
                     if (robotConnection != null) {
@@ -27,9 +27,6 @@ public class RobotApplication {
                 } catch (RobotConnectionException ex) {
                     System.out.println("Error with resources.");
                 }
-            }
-            if (!check && i == 3) {
-                throw new RobotConnectionException("Close connection.");
             }
         }
     }
