@@ -9,17 +9,25 @@ public class RobotApplication {
 
     public static void moveRobot(RobotConnectionManager robotConnectionManager, int toX, int toY) {
         boolean check = false;
+        RobotConnection robotConnection = null;
         for (int i = 1; !check && i <= 3; i++) {
             try {
-                RobotConnection robotConnection = robotConnectionManager.getConnection();
+                robotConnection = robotConnectionManager.getConnection();
                 robotConnection.moveRobotTo(toX, toY);
                 check = true;
             } catch (RobotConnectionException ex) {
                 throw new RobotConnectionException(ex.getMessage(), ex);
             } catch (RuntimeException ex) {
-                System.out.println("Error");
+                System.out.println("Error.");
+            } finally {
+                try {
+                    if (robotConnection != null) {
+                        robotConnection.close();
+                    }
+                } catch (RobotConnectionException ex) {
+                    System.out.println("Error with resources.");
+                }
             }
-            System.out.println("1");
             if (!check && i == 3) {
                 throw new RobotConnectionException("Close connection.");
             }
